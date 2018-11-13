@@ -12,5 +12,5 @@ You'd use [phpbrew](https://github.com/phpbrew/phpbrew) to smoothly switch betwe
 - [scrypt](https://github.com/DomBlack/php-scrypt)
 - [libsodium-php](https://github.com/jedisct1/libsodium-php)
 - Build PHP with openssl-1.1.1 which has native support for SM2 and SM3
-- Build PHP with gmp, you can refer [doc/build-php.md] to make custom build configuration
+- Build PHP with gmp, you can refer [doc/build-php.md](doc/build-php.md) to make custom build configuration
 - [php-sm](https://github.com/hsiaosiyuan0/php-sm)
