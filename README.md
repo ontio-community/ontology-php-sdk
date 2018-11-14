@@ -14,3 +14,9 @@ You'd use [phpbrew](https://github.com/phpbrew/phpbrew) to smoothly switch betwe
 - Build PHP with openssl-1.1.1 which has native support for SM2 and SM3
 - Build PHP with gmp, you can refer [doc/build-php.md](doc/build-php.md) to make custom build configuration
 - [php-sm](https://github.com/hsiaosiyuan0/php-sm)
+
+## Install
+
+```bash
+composer require ontology/ontology-php-sdk
+```
