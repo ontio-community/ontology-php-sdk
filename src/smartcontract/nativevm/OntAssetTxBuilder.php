@@ -134,7 +134,7 @@ class OntAssetTxBuilder
       if ($r->branch($r->offset())->forward(3)->toHex() === '6a7cc8') {
         $tx->amount = $numTmp - 80;
       } else {
-        $tx->amount = gmp_strval(gmp_init('0x' . $r->forward($numTmp)->toHex()));
+        $tx->amount = gmp_strval(BigInt::fromHex($r->forward($numTmp)->toHex())->value);
       }
     } else {
       throw new \InvalidArgumentException('Not a transfer tx');
