@@ -2,13 +2,13 @@
 
 namespace ontio\crypto;
 
-use ontio\Constant;
+use ontio\sdk\Constant;
 use ontio\common\ByteArray;
 use Elliptic\EC;
 use Elliptic\EC\Signature as EcSignature;
 use Elliptic\EdDSA;
 use Elliptic\EC\KeyPair;
-use ontio\ErrorCode;
+use ontio\core\ErrorCode;
 use ontio\common\Util;
 use BitWasp\Bitcoin\Base58;
 use BitWasp\Buffertools\Buffer;

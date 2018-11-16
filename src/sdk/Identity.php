@@ -1,14 +1,14 @@
 <?php
 
-namespace ontio;
+namespace ontio\sdk;
 
 use ontio\crypto\PrivateKey;
 use ontio\crypto\Address;
 use ontio\common\ByteArray;
 use ontio\crypto\ScryptParams;
 use \JsonSerializable;
-use ontio\transaction\Transaction;
-use ontio\transaction\TransactionBuilder;
+use ontio\core\transaction\Transaction;
+use ontio\core\transaction\TransactionBuilder;
 
 class Identity implements JsonSerializable
 {

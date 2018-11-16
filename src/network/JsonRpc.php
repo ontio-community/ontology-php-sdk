@@ -2,10 +2,10 @@
 
 namespace ontio\network;
 
-use ontio\Constant;
+use ontio\sdk\Constant;
 use ontio\crypto\Address;
 use GuzzleHttp\Client;
-use ontio\ErrorCode;
+use ontio\sdk\ErrorCode;
 
 class JsonRpc
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace ontio\transaction;
+namespace ontio\core\scripts;
 
 use ontio\common\ByteArray;
 use \GMP;
 use ontio\common\BigInt;
 use ontio\smartcontract\abi\Struct;
 use ontio\smartcontract\abi\ParameterTypeVal;
-use ontio\ErrorCode;
+use ontio\core\ErrorCode;
 use ontio\crypto\PublicKey;
 use ontio\crypto\Address;
 use ontio\crypto\KeyType;

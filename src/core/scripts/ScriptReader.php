@@ -1,6 +1,6 @@
 <?php
 
-namespace ontio\transaction;
+namespace ontio\core\scripts;
 
 use ontio\common\ForwardBuffer;
 use ontio\common\ByteArray;

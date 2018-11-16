@@ -1,8 +1,8 @@
 <?php
 
-namespace ontio\transaction\payload;
+namespace ontio\core\payload;
 
-use ontio\transaction\ScriptReader;
+use ontio\core\scripts\ScriptReader;
 
 abstract class Payload
 {

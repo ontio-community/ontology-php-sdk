@@ -2,12 +2,12 @@
 
 namespace ontio\crypto;
 
-use ontio\ErrorCode;
-use ontio\transaction\ProgramBuilder;
+use ontio\core\ErrorCode;
+use ontio\core\program\ProgramBuilder;
 use ontio\common\Util;
 use BitWasp\Bitcoin\Base58;
 use BitWasp\Buffertools\Buffer;
-use ontio\Constant;
+use ontio\sdk\Constant;
 use ontio\common\ByteArray;
 
 class Address

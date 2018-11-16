@@ -2,15 +2,15 @@
 
 namespace ontio\smartcontract\nativevm;
 
-use ontio\Constant;
+use ontio\sdk\Constant;
 use ontio\crypto\Address;
 use \GMP;
 use ontio\smartcontract\abi\Struct;
 use ontio\smartcontract\abi\NativeVmParamsBuilder;
-use ontio\transaction\TransactionBuilder;
-use ontio\transaction\Transfer;
-use ontio\transaction\Transaction;
-use ontio\transaction\ScriptReader;
+use ontio\core\transaction\TransactionBuilder;
+use ontio\core\transaction\Transfer;
+use ontio\core\transaction\Transaction;
+use ontio\core\scripts\ScriptReader;
 use ontio\common\ByteArray;
 use ontio\common\BigInt;
 

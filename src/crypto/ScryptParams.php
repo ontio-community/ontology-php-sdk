@@ -2,7 +2,7 @@
 
 namespace ontio\crypto;
 
-use ontio\Constant;
+use ontio\sdk\Constant;
 
 
 class ScryptParams

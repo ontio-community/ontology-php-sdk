@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use ontio\Account;
+use ontio\sdk\Account;
 
 final class Bip44Test extends TestCase
 {

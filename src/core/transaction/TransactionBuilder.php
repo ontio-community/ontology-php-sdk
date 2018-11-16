@@ -1,15 +1,16 @@
 <?php
 
-namespace ontio\transaction;
+namespace ontio\core\transaction;
 
 use ontio\crypto\Address;
 use ontio\common\ByteArray;
-use ontio\Constant;
-use ontio\transaction\payload\InvokeCode;
+use ontio\sdk\Constant;
+use ontio\core\payload\InvokeCode;
 use ontio\common\Fixed64;
 use ontio\crypto\PrivateKey;
 use ontio\crypto\SignatureScheme;
-
+use ontio\core\scripts\ScriptBuilder;
+use ontio\core\scripts\Opcode;
 
 class TransactionBuilder
 {

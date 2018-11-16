@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
+use ontio\crypto\KeyType;
 
 final class KeyTypeTest extends TestCase
 {
@@ -10,7 +11,7 @@ final class KeyTypeTest extends TestCase
    */
   public function test_static_init()
   {
-    $this->assertEquals(\ontio\crypto\KeyType::$Ecdsa->value, 0x12);
-    $this->assertEquals(\ontio\crypto\KeyType::$Ecdsa->label, 'ECDSA');
+    $this->assertEquals(KeyType::$Ecdsa->value, 0x12);
+    $this->assertEquals(KeyType::$Ecdsa->label, 'ECDSA');
   }
 }

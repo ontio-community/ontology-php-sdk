@@ -1,13 +1,16 @@
 <?php
 
-namespace ontio\transaction;
+namespace ontio\core\transaction;
 
 use ontio\crypto\Address;
 use ontio\common\ByteArray;
-use ontio\transaction\payload\Payload;
+use ontio\core\payload\Payload;
 use ontio\common\Fixed64;
-use ontio\transaction\payload\InvokeCode;
-use ontio\transaction\payload\DeployCode;
+use ontio\core\payload\InvokeCode;
+use ontio\core\payload\DeployCode;
+use ontio\core\Signable;
+use ontio\core\scripts\ScriptBuilder;
+use ontio\core\scripts\ScriptReader;
 
 class Transaction implements Signable
 {

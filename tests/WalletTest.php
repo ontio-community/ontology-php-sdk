@@ -2,9 +2,9 @@
 
 use PHPUnit\Framework\TestCase;
 
-use ontio\Wallet;
+use ontio\sdk\Wallet;
 use ontio\crypto\PrivateKey;
-use ontio\Account;
+use ontio\sdk\Account;
 
 final class WalletTest extends TestCase
 {

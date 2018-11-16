@@ -3,7 +3,7 @@
 namespace ontio\crypto;
 
 use ontio\common\ByteArray;
-use ontio\Constant;
+use ontio\sdk\Constant;
 
 class Scrypt
 {

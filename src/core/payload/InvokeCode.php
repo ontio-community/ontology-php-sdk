@@ -1,10 +1,10 @@
 <?php
 
-namespace ontio\transaction\payload;
+namespace ontio\core\payload;
 
-use ontio\transaction\ScriptBuilder;
+use ontio\core\scripts\ScriptBuilder;
 use ontio\common\ByteArray;
-use ontio\transaction\ScriptReader;
+use ontio\core\scripts\ScriptReader;
 
 class InvokeCode extends Payload
 {

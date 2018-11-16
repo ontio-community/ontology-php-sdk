@@ -1,9 +1,9 @@
 <?php
 
-namespace ontio;
+namespace ontio\sdk;
 
 use ontio\crypto\ScryptParams;
-use ontio\Account;
+use ontio\sdk\Account;
 use ontio\common\Util;
 use \JsonSerializable;
 

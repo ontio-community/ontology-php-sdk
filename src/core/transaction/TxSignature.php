@@ -1,12 +1,15 @@
 <?php
 
-namespace ontio\transaction;
+namespace ontio\core\transaction;
 
 use ontio\crypto\PublicKey;
 use ontio\crypto\PrivateKey;
 use ontio\crypto\SignatureScheme;
 use ontio\common\ByteArray;
 use ontio\smartcontract\abi\NativeVmParamsBuilder;
+use ontio\core\Signable;
+use ontio\core\program\ProgramBuilder;
+use ontio\core\program\ProgramReader;
 
 class TxSignature
 {

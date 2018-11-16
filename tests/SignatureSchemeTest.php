@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
+use ontio\crypto\SignatureScheme;
 
 final class SignatureSchemeTest extends TestCase
 {
@@ -10,7 +11,7 @@ final class SignatureSchemeTest extends TestCase
    */
   public function test_static_init()
   {
-    $this->assertEquals(\ontio\crypto\SignatureScheme::$EcdsaWithSha224->value, 0);
-    $this->assertEquals(\ontio\crypto\SignatureScheme::$EcdsaWithSha224->label, 'SHA224withECDSA');
+    $this->assertEquals(SignatureScheme::$EcdsaWithSha224->value, 0);
+    $this->assertEquals(SignatureScheme::$EcdsaWithSha224->label, 'SHA224withECDSA');
   }
 }

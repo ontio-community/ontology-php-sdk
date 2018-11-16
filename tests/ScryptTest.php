@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 
 use ontio\crypto\PrivateKey;
-use ontio\Account;
+use ontio\sdk\Account;
 use ontio\ErrorCode;
 use ontio\common\ByteArray;
 use ontio\crypto\Address;

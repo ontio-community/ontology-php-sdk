@@ -3,11 +3,11 @@
 use PHPUnit\Framework\TestCase;
 
 use ontio\crypto\Address;
-use ontio\transaction\TransactionBuilder;
+use ontio\core\transaction\TransactionBuilder;
 use ontio\smartcontract\nativevm\OntAssetTxBuilder;
 use ontio\common\ByteArray;
-use ontio\transaction\ScriptReader;
-use ontio\Wallet;
+use ontio\core\scripts\ScriptReader;
+use ontio\sdk\Wallet;
 use ontio\crypto\PrivateKey;
 use ontio\network\JsonRpc;
 use ontio\crypto\ScryptParams;

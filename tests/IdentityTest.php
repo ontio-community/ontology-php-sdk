@@ -2,9 +2,9 @@
 
 use PHPUnit\Framework\TestCase;
 use ontio\crypto\PrivateKey;
-use ontio\Identity;
+use ontio\sdk\Identity;
 use Datto\JsonRpc\Exceptions\Exception;
-use ontio\ErrorCode;
+use ontio\core\ErrorCode;
 
 final class IdentityTest extends TestCase
 {

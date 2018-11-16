@@ -1,15 +1,17 @@
 <?php
 
-namespace ontio\transaction;
+namespace ontio\core\program;
 
 use ontio\common\ByteArray;
-use ontio\ErrorCode;
+use ontio\core\ErrorCode;
 use ontio\crypto\PublicKey;
 use ontio\crypto\KeyType;
 use Elliptic\EC;
 use Elliptic\EC\KeyPair;
 use Elliptic\Curve\ShortCurve\Point;
 use \GMP;
+use ontio\core\scripts\ScriptBuilder;
+use ontio\core\scripts\Opcode;
 
 class ProgramBuilder extends ScriptBuilder
 {

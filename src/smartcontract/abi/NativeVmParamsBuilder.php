@@ -2,11 +2,11 @@
 
 namespace ontio\smartcontract\abi;
 
-use ontio\transaction\ScriptBuilder;
+use ontio\core\scripts\ScriptBuilder;
 use ontio\common\ByteArray;
 use ontio\crypto\Address;
 use \GMP;
-use ontio\transaction\Opcode;
+use ontio\core\scripts\Opcode;
 
 class NativeVmParamsBuilder extends ScriptBuilder
 {

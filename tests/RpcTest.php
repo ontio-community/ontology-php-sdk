@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 use ontio\network\JsonRpc;
 use ontio\crypto\PrivateKey;
 use ontio\crypto\PublicKey;
-use ontio\Account;
+use ontio\sdk\Account;
 use ontio\crypto\Address;
 
 final class RpcTest extends TestCase

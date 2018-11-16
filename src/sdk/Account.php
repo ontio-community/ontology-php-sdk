@@ -1,6 +1,6 @@
 <?php
 
-namespace ontio;
+namespace ontio\sdk;
 
 use ontio\crypto\PrivateKey;
 use ontio\crypto\ScryptParams;

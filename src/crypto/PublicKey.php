@@ -6,7 +6,7 @@ use ontio\common\ForwardBuffer;
 use ontio\common\ByteArray;
 use Elliptic\EC;
 use Elliptic\EdDSA;
-use ontio\Constant;
+use ontio\sdk\Constant;
 
 class PublicKey extends Key
 {
