@@ -114,6 +114,39 @@ class Account implements JsonSerializable
     return $acc;
   }
 
+  public static function importFromKeystore(Keystore $store, string $password) : self
+  {
+    if ($store->type !== 'A') {
+      throw new \InvalidArgumentException('deformed type: ' . $store->type);
+    }
+
+    $encKey = PrivateKey::fromJsonObj((object)[
+      'algorithm' => $store->algorithm,
+      'parameters' => (object)['curve' => $store->parameters->curve->label],
+      'key' => $store->key,
+      'scrypt' => $store->scrypt,
+      'external' => null
+    ]);
+
+    return self::import(
+      $store->label,
+      $encKey,
+      $password,
+      $store->address,
+      $store->salt
+    );
+  }
+
+  public static function importFromWif(
+    string $password,
+    string $wif,
+    string $label = '',
+    ScryptParams $params = null
+  ) : self {
+    $prikey = PrivateKey::fromWif($wif);
+    return self::create($params, $priKey, $label, $params);
+  }
+
   public static function importFromMnemonic(
     string $mnemonic,
     string $label = '',
@@ -164,5 +197,19 @@ class Account implements JsonSerializable
     ]);
     $acc->extra = $obj->extra;
     return $acc;
+  }
+
+  public function exportKeystore() : Keystore
+  {
+    $ks = new Keystore();
+    $ks->type = 'A';
+    $ks->label = $this->label;
+    $ks->algorithm = $this->encryptedKey->algorithm->label;
+    $ks->scrypt = $this->encryptedKey->scrypt;
+    $ks->key = $this->encryptedKey->key->toBase64();
+    $ks->salt = $this->salt;
+    $ks->address = $this->address;
+    $ks->parameters = $this->encryptedKey->parameters;
+    return $ks;
   }
 }

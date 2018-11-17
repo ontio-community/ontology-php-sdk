@@ -29,7 +29,7 @@ abstract class Enumerable
     });
 
     if (count($f) !== 1)
-      throw new \InvalidArgumentException('Enum value not found');
+      throw new \InvalidArgumentException('Enum value not found: ' . $value);
 
     return array_pop($f);
   }
@@ -41,7 +41,7 @@ abstract class Enumerable
     });
 
     if (count($f) !== 1)
-      throw new \InvalidArgumentException('Enum value not found');
+      throw new \InvalidArgumentException('Enum value not found: ' . $label);
 
     return array_pop($f);
   }

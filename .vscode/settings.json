@@ -17,6 +17,7 @@
     "HASKEY",
     "JMPIF",
     "JMPIFNOT",
+    "Keystore",
     "LGPL",
     "Mdanter",
     "Merkle",

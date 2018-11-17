@@ -15,9 +15,24 @@ use BitWasp\Buffertools\Buffer;
 use BitWasp\Bitcoin\Mnemonic\Bip39\Bip39SeedGenerator;
 use BitWasp\Bitcoin\Bitcoin;
 use Mdanter\Ecc\EccFactory;
+use ontio\crypto\ScryptParams;
 
 class PrivateKey extends Key
 {
+
+  /** @var ScryptParams */
+  public $scrypt;
+
+  public function __construct(
+    ByteArray $key,
+    ? KeyType $algorithm = null,
+    ? KeyParameters $parameters = null,
+    ? ScryptParams $scrypt = null
+  ) {
+    parent::__construct($key, $algorithm, $parameters);
+    $this->scrypt = $scrypt;
+  }
+
   public static function random(? KeyType $keyType = null, ? KeyParameters $keyParameters = null) : self
   {
     return new self(ByteArray::random(32), $keyType, $keyParameters);
@@ -28,7 +43,8 @@ class PrivateKey extends Key
     return new self(
       ByteArray::fromBase64($obj->key),
       KeyType::fromLabel($obj->algorithm),
-      KeyParameters::fromJsonObj($obj->parameters)
+      KeyParameters::fromJsonObj($obj->parameters),
+      ScryptParams::fromJsonObj($obj->scrypt)
     );
   }
 
@@ -159,7 +175,7 @@ class PrivateKey extends Key
       throw new \InvalidArgumentException(ErrorCode::INVALID_ADDR);
     }
     $enc = Scrypt::encryptWithGcm($this->key->toBinary(), $addr, $salt, $keyPhrase, $params);
-    return new self(ByteArray::fromBase64($enc), $this->algorithm, $this->parameters);
+    return new self(ByteArray::fromBase64($enc), $this->algorithm, $this->parameters, $params);
   }
 
   public function decrypt(string $keyPhrase, Address $address, string $salt, ? ScryptParams $params = null) : self

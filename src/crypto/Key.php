@@ -23,7 +23,7 @@ class Key implements JsonSerializable
    */
   public $key;
 
-  public function __construct(ByteArray $key, KeyType $algorithm = null, KeyParameters $parameters = null)
+  public function __construct(ByteArray $key, ? KeyType $algorithm = null, ? KeyParameters $parameters = null)
   {
     $this->key = $key;
 

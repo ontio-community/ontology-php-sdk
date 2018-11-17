@@ -3,9 +3,9 @@
 namespace ontio\crypto;
 
 use ontio\sdk\Constant;
+use \JsonSerializable;
 
-
-class ScryptParams
+class ScryptParams implements JsonSerializable
 {
   /**
    * The CPU difficultly (must be a power of 2, greater than 1)
@@ -55,6 +55,16 @@ class ScryptParams
     self::$default->r = Constant::$DEFAULT_SCRYPT->blockSize;
     self::$default->p = Constant::$DEFAULT_SCRYPT->parallel;
     self::$default->dkLen = Constant::$DEFAULT_SCRYPT->size;
+  }
+
+  public function jsonSerialize()
+  {
+    return [
+      'n' => $this->n,
+      'p' => $this->p,
+      'r' => $this->r,
+      'dkLen' => $this->dkLen
+    ];
   }
 }
 

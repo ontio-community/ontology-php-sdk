@@ -11,22 +11,33 @@ class Wallet implements JsonSerializable
 {
   /** @var string */
   public $name;
+
   /** @var string */
   public $defaultOntid;
+
   /** @var string */
   public $defaultAccountAddress;
+
   /** @var string */
   public $createTime;
+
   /** @var string */
   public $version;
+
   /** @var ScryptParams */
   public $scrypt;
+
   /** @var Identity[] */
   public $identities = [];
+
   /** @var Account[] */
   public $accounts = [];
+
   /** @var mixed */
   public $extra;
+
+  /** @var string */
+  private $file;
 
   public function addAccount(Account $acc)
   {
@@ -81,6 +92,19 @@ class Wallet implements JsonSerializable
   public static function fromJson(string $json) : self
   {
     return self::fromJsonObj(json_decode($json));
+  }
+
+  public static function fromFile(string $file) : self
+  {
+    $w = self::fromJson(file_get_contents($file));
+    $w->file = $file;
+    return $w;
+  }
+
+  public function save(string $file)
+  {
+    $this->file = $file;
+    file_put_contents($this->file, json_encode($this));
   }
 
   public static function fromJsonObj($obj) : self
