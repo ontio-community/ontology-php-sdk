@@ -33,6 +33,6 @@ class BigInt
 
   public function toHex() : string
   {
-    return bin2hex(gmp_export($this->value, 1, GMP_LSW_FIRST));
+    return bin2hex(gmp_export($this->value, 2, GMP_LSW_FIRST));
   }
 }

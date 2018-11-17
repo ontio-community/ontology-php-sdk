@@ -6,6 +6,7 @@ use ontio\sdk\Constant;
 use ontio\crypto\Address;
 use GuzzleHttp\Client;
 use ontio\sdk\ErrorCode;
+use ontio\smartcontract\nativevm\OntAssetTxBuilder;
 
 class JsonRpc
 {
@@ -149,9 +150,14 @@ class JsonRpc
 
   public function getAllowance(string $asset, Address $from, Address $to) : JsonRpcResult
   {
-    if ($asset !== 'ont' && $asset !== 'ont') {
+    if ($asset !== 'ont' && $asset !== 'ong') {
       throw new \InvalidArgumentException(ErrorCode::INVALID_PARAMS);
     }
     return $this->req('getallowance', $asset, $from->toBase58(), $to->toBase58());
+  }
+
+  public function getUnclaimedOng(Address $address) : JsonRpcResult
+  {
+    return $this->getAllowance('ong', new Address(OntAssetTxBuilder::ONT_CONTRACT), $address);
   }
 }

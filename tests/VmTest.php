@@ -26,7 +26,7 @@ final class VmTest extends TestCase
     $params = $builder->toHex();
 
     $this->assertEquals(
-      '00c66b144868a5ff16176fedab8df086fc36f7d31bab14226a7cc8140eff5cd245a6e2c991579b1c2704fad116c395076a7cc801116a7cc86c51c1',
+      '00c66b144868a5ff16176fedab8df086fc36f7d31bab14226a7cc8140eff5cd245a6e2c991579b1c2704fad116c395076a7cc80211006a7cc86c51c1',
       $params
     );
   }

@@ -94,7 +94,7 @@ final class TxParseTest extends TestCase
     $txBuilder->signTransaction($tx, $priKey);
 
     $this->assertEquals(
-      '01b8f1b7f8bbc1d333c92385233df2f9dc7bd08af69d60690d336798eff79708c31ca1a281f0e94f3ec20065932f75a565d178767f103ef58ad034ad541b04b854',
+      '0122c0f110f1d00d1c04cede664142ffbc1d1a274d77122504115cdb705e1037ba1438115b65b469febbc0cbc25d689f30912ba56b85f9e5d873369ad9ac9ec164',
       $tx->sigs[0]->sigData[0]
     );
   }

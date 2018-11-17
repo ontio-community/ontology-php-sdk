@@ -22,7 +22,7 @@ final class RpcTest extends TestCase
 
   public static function setUpBeforeClass()
   {
-    self::$rpc = new JsonRpc();
+    self::$rpc = new JsonRpc('http://127.0.0.1:20336');
     self::$priKey = PrivateKey::random();
     self::$pubKey = self::$priKey->getPublicKey();
     self::$account = Account::create('123456', self::$priKey);
@@ -46,5 +46,10 @@ final class RpcTest extends TestCase
     $c = self::$rpc->getNodeCount();
     $this->assertEquals('SUCCESS', $c->desc);
   }
-  // TODO: more tests
+
+  public function test_get_unclaimed_ong()
+  {
+    $c = self::$rpc->getUnclaimedOng(new Address('ASSxYHNSsh4FdF2iNvHdh3Np2sgWU21hfp'));
+    $this->assertEquals('SUCCESS', $c->desc);
+  }
 }
