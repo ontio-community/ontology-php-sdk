@@ -30,6 +30,16 @@ final class OntidContractTxBuilderTest extends TestCase
 
   public static $sm2Account;
 
+  /** @var PrivateKey */
+  public static $prikey;
+
+  /** @var Address */
+  public static $addr;
+
+  public static $ontid;
+
+  public static $regRes;
+
   public static function setUpBeforeClass()
   {
     // pwd: 123456
@@ -41,14 +51,17 @@ final class OntidContractTxBuilderTest extends TestCase
     self::$gasPrice = '0';
 
     self::$rpc = new JsonRpc('http://127.0.0.1:20336');
+
+    self::$prikey = PrivateKey::random();
+    self::$addr = Address::fromPubKey(self::$prikey->getPublicKey());
+    self::$ontid = 'did:ont:' . self::$addr->toBase58();
   }
 
   public function test_register_ontid()
   {
-    $ontid = 'did:ont:' . self::$adminAddress->toBase58();
     $ontIdBuilder = new OntidContractTxBuilder();
     $tx = $ontIdBuilder->buildRegisterOntidTx(
-      $ontid,
+      self::$ontid,
       self::$adminPrivateKey->getPublicKey(),
       self::$gasPrice,
       self::$gasLimit,
@@ -57,6 +70,16 @@ final class OntidContractTxBuilderTest extends TestCase
 
     $txBuilder = new TransactionBuilder();
     $txBuilder->signTransaction($tx, self::$adminPrivateKey);
+
+    $res = self::$rpc->sendRawTransaction($tx->serialize());
+    self::$regRes = $res->result;
+    $this->assertEquals('SUCCESS', $res->desc);
+  }
+
+  public function test_get_ddo()
+  {
+    $ontIdBuilder = new OntidContractTxBuilder();
+    $tx = $ontIdBuilder->buildGetDDOTx('did:ont:AGHyJkH7hHdCCm7uxjFshMjYG3TD1SELey');
 
     $res = self::$rpc->sendRawTransaction($tx->serialize(), true);
     $this->assertEquals('SUCCESS', $res->desc);

@@ -39,6 +39,25 @@ class OntidContractTxBuilder
     $txBuilder = new TransactionBuilder();
     return $txBuilder->makeNativeContractTx($method, $params, new Address(self::ONTID_CONTRACT), $gasPrice, $gasLimit, $payer);
   }
+
+  public function buildGetDDOTx(string $ontid) : Transaction
+  {
+    $method = self::$ONTID_METHOD->getDDO;
+
+    if (strpos($ontid, 'did') === 0) {
+      $ontid = ByteArray::fromBinary($ontid)->toHex();
+    }
+
+    $struct = new Struct();
+    $struct->add($ontid);
+
+    $paramsBuilder = new NativeVmParamsBuilder();
+    $paramsBuilder->pushNativeCodeScript([$struct]);
+    $params = $paramsBuilder->toHex();
+
+    $txBuilder = new TransactionBuilder();
+    return $txBuilder->makeNativeContractTx($method, $params, new Address(self::ONTID_CONTRACT));
+  }
 }
 
 OntidContractTxBuilder::$ONTID_METHOD = (object)[
