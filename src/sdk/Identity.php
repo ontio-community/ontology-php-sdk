@@ -40,7 +40,7 @@ class Identity implements JsonSerializable
    * @param ScryptParams|null $params Optional params to decrypt
    * @return self
    */
-  public static function importIdentity(
+  public static function import(
     string $label,
     PrivateKey $enPriKey,
     string $pwd,
@@ -90,6 +90,29 @@ class Identity implements JsonSerializable
     $id->controls[] = $ctrl;
 
     return $id;
+  }
+
+  public static function importFromKeystore(Keystore $store, string $password) : self
+  {
+    if ($store->type !== 'I') {
+      throw new \InvalidArgumentException('deformed type: ' . $store->type);
+    }
+
+    $encKey = PrivateKey::fromJsonObj((object)[
+      'algorithm' => $store->algorithm,
+      'parameters' => (object)['curve' => $store->parameters->curve->label],
+      'key' => $store->key,
+      'scrypt' => $store->scrypt,
+      'external' => null
+    ]);
+
+    return self::import(
+      $store->label,
+      $encKey,
+      $password,
+      $store->address,
+      $store->salt
+    );
   }
 
   public static function fromJson(string $json) : self
@@ -142,5 +165,20 @@ class Identity implements JsonSerializable
     $builder = new TransactionBuilder();
     $builder->signTransaction($tx, $prikey, $prikey->algorithm->defaultScheme);
     return $tx;
+  }
+
+  public function exportKeystore() : Keystore
+  {
+    $ks = new Keystore();
+    $ctrl = $this->controls[0];
+    $ks->type = 'I';
+    $ks->label = $this->label;
+    $ks->algorithm = $ctrl->encryptedKey->algorithm->label;
+    $ks->scrypt = $ctrl->encryptedKey->scrypt;
+    $ks->key = $ctrl->encryptedKey->key->toBase64();
+    $ks->salt = $ctrl->salt;
+    $ks->address = $ctrl->address;
+    $ks->parameters = $ctrl->encryptedKey->parameters;
+    return $ks;
   }
 }
