@@ -24,7 +24,10 @@
     "ext-openssl": "*",
     "ext-sodium": "*",
     "adbario/php-dot-notation": "2.x-dev",
-    "guzzlehttp/guzzle": "^6.3@dev"
+    "guzzlehttp/guzzle": "^6.3@dev",
+    "clue/block-react": "^1.3",
+    "ratchet/pawl": "dev-master",
+    "react/event-loop": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^7"

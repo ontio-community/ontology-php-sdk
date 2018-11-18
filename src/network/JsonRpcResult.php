@@ -6,10 +6,13 @@ class JsonRpcResult
 {
   /** @var string */
   public $desc;
+
   /** @var int */
   public $error;
+
   /** @var int */
   public $id;
+
   public $result;
 
   public static function fromJson($obj) : self

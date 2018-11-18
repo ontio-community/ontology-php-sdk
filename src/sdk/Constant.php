@@ -20,6 +20,7 @@ class Constant
   public static $TEST_NODE = 'polaris1.ont.io';
 
   public static $HTTP_JSON_PORT = '20336';
+  public static $HTTP_WS_PORT = '20335';
 
   public static $NATIVE_INVOKE_NAME = 'Ontology.Native.Invoke';
 
@@ -47,8 +48,10 @@ class Constant
 
     $TEST_NODE = self::$TEST_NODE;
     $HTTP_JSON_PORT = self::$HTTP_JSON_PORT;
+    $HTTP_WS_PORT = self::$HTTP_WS_PORT;
     self::$TEST_ONT_URL = new Dot([
-      'RPC_URL' => "http://{$TEST_NODE}:{$HTTP_JSON_PORT}"
+      'RPC_URL' => "http://{$TEST_NODE}:{$HTTP_JSON_PORT}",
+      'SOCKET_URL' => "ws://{$TEST_NODE}:{$HTTP_WS_PORT}"
     ]);
 
     self::$TOKEN_TYPE = new Dot([
