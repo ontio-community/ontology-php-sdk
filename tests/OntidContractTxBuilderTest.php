@@ -38,8 +38,6 @@ final class OntidContractTxBuilderTest extends TestCase
 
   public static $ontid;
 
-  public static $regRes;
-
   public static function setUpBeforeClass()
   {
     // pwd: 123456
@@ -72,7 +70,6 @@ final class OntidContractTxBuilderTest extends TestCase
     $txBuilder->signTransaction($tx, self::$adminPrivateKey);
 
     $res = self::$rpc->sendRawTransaction($tx->serialize());
-    self::$regRes = $res->result;
     $this->assertEquals('SUCCESS', $res->desc);
   }
 
