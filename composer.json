@@ -33,6 +33,6 @@
     "phpunit/phpunit": "^7"
   },
   "scripts": {
-    "test": "phpunit --debug --colors=always --testdox tests/DeployCodeTxTest.php"
+    "test": "phpunit --debug --colors=always --testdox tests/"
   }
 }
