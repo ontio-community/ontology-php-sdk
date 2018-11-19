@@ -7,6 +7,9 @@ use ontio\common\ByteArray;
 use ontio\crypto\Address;
 use \GMP;
 use ontio\core\scripts\Opcode;
+use ontio\common\Util;
+use function ontio\core\scripts\convertArray;
+use ontio\smartcontract\abi\Struct;
 
 class NativeVmParamsBuilder extends ScriptBuilder
 {
@@ -103,5 +106,53 @@ class NativeVmParamsBuilder extends ScriptBuilder
       if (!($item instanceof $type)) return false;
     }
     return true;
+  }
+
+  public function pushCodeParams(array $list) : self
+  {
+    for ($i = count($list) - 1; $i >= 0; $i--) {
+      $v = $list[$i];
+      if (is_string($v)) {
+        $this->pushHexString($v);
+      } else if (is_int($v)) {
+        $this->pushNum($v);
+      } else if (is_bool($v)) {
+        $this->pushBool($v);
+      } else if ($v instanceof GMP) {
+        $this->pushBigNum($v);
+      } else if (Util::isAssocArray($v)) {
+        $b = new self();
+        $b->pushMap($v);
+        $this->pushHexString($b->toHex());
+      } else if ($v instanceof Struct) {
+        $b = new self();
+        $b->pushStruct($v);
+        $this->pushHexString($b->toHex());
+      } else if (is_array($v)) {
+        $this->pushCodeParams($v);
+        $this->pushNum(count($v));
+        $this->pushInt(Opcode::PACK);
+      }
+    }
+    return $this;
+  }
+
+  public function pushAbiFunction(AbiFunction $fn) : self
+  {
+    $list = [ByteArray::fromBinary($fn->name)->toHex()];
+    $params = [];
+
+    foreach ($fn->parameters as $p) {
+      if ($p->getType() === ParameterType::String) {
+        $params[] = ByteArray::fromBinary($p->getValue())->toHex();
+      } else if ($p->getType() === ParameterType::Long) {
+        $params[] = gmp_init($p->getValue());
+      } else {
+        $params[] = $p->getValue();
+      }
+    }
+
+    $list[] = $params;
+    return $this->pushCodeParams($list);
   }
 }

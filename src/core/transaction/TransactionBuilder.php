@@ -12,6 +12,9 @@ use ontio\crypto\SignatureScheme;
 use ontio\core\scripts\ScriptBuilder;
 use ontio\core\scripts\Opcode;
 use ontio\core\payload\DeployCode;
+use ontio\smartcontract\abi\Parameter;
+use ontio\smartcontract\abi\AbiFunction;
+use ontio\smartcontract\abi\NativeVmParamsBuilder;
 
 class TransactionBuilder
 {
@@ -100,6 +103,61 @@ class TransactionBuilder
 
     $tx->gasLimit = new Fixed64($gasLimit);
     $tx->gasPrice = new Fixed64($gasPrice);
+    if ($payer) {
+      $tx->payer = $payer;
+    }
+
+    return $tx;
+  }
+
+  /**
+   * Creates transaction to invoke smart contract
+   *
+   * @param string $fnName
+   * @param Parameter[]|string $params
+   * @param Address $contractAddr
+   * @param string $gasPrice
+   * @param string $gasLimit
+   * @param Address $payer
+   * @return void
+   */
+  public function makeInvokeTransaction(
+    string $fnName,
+    array $params,
+    Address $contractAddr,
+    ? string $gasPrice = null,
+    ? string $gasLimit = null,
+    ? Address $payer = null
+  ) : Transaction {
+
+    $tx = new Transaction();
+    $tx->type = TxType::Invoke;
+
+    $code = new ByteArray();
+    if (is_string($params)) {
+      $code->pushArray(ByteArray::fromHex($params));
+    } else {
+      $fn = new AbiFunction($fnName, $params);
+      $b = new NativeVmParamsBuilder();
+      $code->pushArray($b->pushAbiFunction($fn));
+    }
+
+    $code->pushInt(Opcode::APPCALL);
+    $code->pushArray(ByteArray::fromHex($contractAddr->toHex()));
+
+    $payload = new InvokeCode();
+    $payload->code = $code->toHex();
+
+    $tx->payload = $payload;
+
+    if ($gasLimit) {
+      $tx->gasLimit = new Fixed64($gasLimit);
+    }
+
+    if ($gasPrice) {
+      $tx->gasPrice = new Fixed64($gasPrice);
+    }
+
     if ($payer) {
       $tx->payer = $payer;
     }

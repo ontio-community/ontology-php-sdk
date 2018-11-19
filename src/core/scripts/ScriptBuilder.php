@@ -11,6 +11,9 @@ use ontio\core\ErrorCode;
 use ontio\crypto\PublicKey;
 use ontio\crypto\Address;
 use ontio\crypto\KeyType;
+use ontio\smartcontract\abi\AbiFunction;
+use ontio\smartcontract\abi\ParameterType;
+use ontio\smartcontract\abi\Parameter;
 
 class ScriptBuilder extends ByteArray
 {
@@ -83,6 +86,40 @@ class ScriptBuilder extends ByteArray
     return $this;
   }
 
+  public function pushMap(array $val) : self
+  {
+    $this->pushInt(ParameterTypeVal::Map);
+    $this->pushInt(count($val));
+
+    foreach ($val as $k => $v) {
+      $this->pushInt(ParameterTypeVal::ByteArray);
+      $this->pushHexString(ByteArray::fromBinary($k)->toHex());
+
+      /** @var Parameter $v */
+      $type = $v->getType();
+      if ($type === ParameterType::ByteArray) {
+        $this->pushInt(ParameterTypeVal::ByteArray);
+        $this->pushHexString($v->getValue());
+      } else if ($type === ParameterType::String) {
+        $this->pushInt(ParameterTypeVal::ByteArray);
+        $this->pushHexString(ByteArray::fromBinary($v->getValue())->toHex());
+      } else if ($type === ParameterType::Integer) {
+        $this->pushInt(ParameterTypeVal::Integer);
+        $b = new self();
+        $b->pushVarInt($v->getValue());
+        $this->pushHexString($b->toHex());
+      } else if ($type === ParameterType::Long) {
+        $this->pushInt(ParameterTypeVal::Long);
+        $b = new self();
+        $b->pushVarInt($v->getValue());
+        $this->pushHexString($b->toHex());
+      } else {
+        throw new \Exception(ErrorCode::INVALID_PARAMS);
+      }
+    }
+    return $this;
+  }
+
   public function pushStruct(Struct $s) : self
   {
     $this->pushInt(ParameterTypeVal::Struct);
@@ -90,10 +127,12 @@ class ScriptBuilder extends ByteArray
     foreach ($s->list as $v) {
       if (is_string($v)) {
         $this->pushInt(ParameterTypeVal::ByteArray);
-        $this->pushArray(ByteArray::fromHex($v));
+        $this->pushHexString($v);
       } else if (is_int($v)) {
-        $this->pushInt(ParameterTypeVal::Integer);
-        $this->pushVarInt($v);
+        $this->pushInt(ParameterTypeVal::ByteArray);
+        $b = new self();
+        $b->pushVarInt($v);
+        $this->pushHexString($b->toHex());
       } else {
         throw new \InvalidArgumentException(ErrorCode::INVALID_PARAMS);
       }
@@ -168,4 +207,21 @@ class ScriptBuilder extends ByteArray
     $this->pushHexString($addr->serialize());
     return $this;
   }
+}
+
+function convertArray(array $list) : array
+{
+  $ret = [];
+  foreach ($list as $p) {
+    if (method_exists($p, 'getType') && $p->getType() === ParameterType::String) {
+      $ret[] = ByteArray::fromBinary($p->getValue())->toHex();
+    } else if (method_exists($p, 'getType') && $p->getType() === ParameterType::Long) {
+      $ret[] = gmp_init($p->getValue());
+    } else if (is_array($p)) {
+      $ret[] = convertArray($p);
+    } else {
+      $ret[] = $p;
+    }
+  }
+  return $ret;
 }

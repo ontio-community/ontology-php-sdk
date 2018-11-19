@@ -28,4 +28,9 @@ class Util
       $len--;
     }
   }
+
+  public static function isAssocArray($obj) : bool
+  {
+    return is_array($obj) && count(array_filter(array_keys($obj), 'is_string')) > 0;
+  }
 }

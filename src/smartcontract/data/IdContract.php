@@ -4,11 +4,11 @@ namespace ontio\smartcontract\data;
 
 class IdContract
 {
-  public static $id;
+  public static $abi;
 }
 
-IdContract::$id = array(
-  'hash' => 'ff00000000000000000000000000000000000003',
+IdContract::$abi = array(
+  'hash' => '0300000000000000000000000000000000000000',
   'entrypoint' => 'Main',
   'functions' =>
     array(
@@ -37,8 +37,8 @@ IdContract::$id = array(
         array(
         0 =>
           array(
-          'name' => 'ontId',
-          'type' => 'ByteArray',
+          'name' => 'id',
+          'type' => 'String',
         ),
         1 =>
           array(

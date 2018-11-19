@@ -20,11 +20,11 @@ class AbiFunction
    * @param string $returnType
    * @param Parameter[] $parameters
    */
-  public function __construct(string $name, string $returnType, $parameters = [])
+  public function __construct(string $name, array $parameters = [], string $returnType = 'any')
   {
     $this->name = $name;
-    $this->returnType = $returnType;
     $this->parameters = $parameters;
+    $this->returnType = $returnType;
   }
 
   /**
@@ -50,12 +50,13 @@ class AbiFunction
 
   public static function fromJsonObj($obj) : self
   {
-    $f = new self();
+    $f = new self('', [], 'any');
     $f->name = $obj->name;
     $f->returnType = $obj->returnType;
     $f->parameters = array_map(function ($p) {
       return Parameter::fromJsonObj($p);
     }, $obj->parameters);
+    return $f;
   }
 
   public function jsonSerialize()

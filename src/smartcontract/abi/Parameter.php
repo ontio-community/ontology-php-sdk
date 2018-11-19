@@ -19,7 +19,7 @@ class Parameter
   /** @var string|int|ByteArray */
   public $value;
 
-  public function __construct(string $name, int $type, $value)
+  public function __construct(string $name, string $type, $value)
   {
     $this->name = $name;
     $this->type = $type;
@@ -31,7 +31,7 @@ class Parameter
     return $this->name;
   }
 
-  public function getType() : int
+  public function getType() : string
   {
     return $this->type;
   }
@@ -47,7 +47,7 @@ class Parameter
   public function setValue($value) : bool
   {
     if ($value->type === $this->type && $value->name === $this->name && $value->value !== null) {
-      $this->value = $value;
+      $this->value = $value->value;
       return true;
     }
     return false;
@@ -55,7 +55,7 @@ class Parameter
 
   public function fromJsonObj($obj) : self
   {
-    $p = new self();
+    $p = new self('', 0, null);
     $p->name = $obj->name;
     $p->type = $obj->type;
     $p->value = $obj->value;
