@@ -111,4 +111,19 @@ final class TransferTest extends TestCase
     $res = self::$rpc->sendRawTransaction($tx->serialize(), false);
     $this->assertEquals('SUCCESS', $res->desc);
   }
+
+  public function test_withdraw_ong()
+  {
+    $address = self::$adminAddress;
+    $amount = 1 * 1e9;
+
+    $ongBuilder = new OntAssetTxBuilder();
+    $tx = $ongBuilder->makeWithdrawOngTx($address, $address, $amount, self::$gasPrice, self::$gasLimit, $address);
+
+    $txBuilder = new TransactionBuilder();
+    $txBuilder->signTransaction($tx, self::$adminPrivateKey);
+
+    $res = self::$rpc->sendRawTransaction($tx->serialize(), false);
+    $this->assertEquals('SUCCESS', $res->desc);
+  }
 }

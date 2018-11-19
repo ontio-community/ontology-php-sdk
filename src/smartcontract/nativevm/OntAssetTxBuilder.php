@@ -80,6 +80,36 @@ class OntAssetTxBuilder
     return $tx;
   }
 
+  public function makeWithdrawOngTx(
+    Address $from,
+    Address $to,
+    $amount,
+    string $gasPrice,
+    string $gasLimit,
+    Address $payer
+  ) : Transfer {
+
+    $num = $this->verifyAmount($amount);
+
+    $struct = new Struct();
+    $struct->add($from, new Address(self::ONT_CONTRACT), $to, $num);
+    $list = [$struct];
+
+    $builder = new NativeVmParamsBuilder();
+    $builder->pushNativeCodeScript($list);
+    $params = $builder->toHex();
+
+    $txBuilder = new TransactionBuilder();
+    /** @var Transfer $tx */
+    $tx = $txBuilder->makeNativeContractTx('transferFrom', $params, new Address(self::ONG_CONTRACT), $gasPrice, $gasLimit, $payer);
+    $tx->tokenType = 'ONG';
+    $tx->from = $from;
+    $tx->to = $to;
+    $tx->amount = $amount;
+    $tx->method = 'transferFrom';
+    return $tx;
+  }
+
   /**
    * @param ScriptReader $r
    * @return Transfer|Transaction
