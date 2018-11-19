@@ -6,7 +6,7 @@ class Opcode
 {
     // Constants
   const PUSH0 = 0x00; // An empty array of bytes is pushed onto the stack.
-  const PUSHF = PUSH0;
+  const PUSHF = 0x00;
   const PUSHBYTES1 = 0x01; // 0x01-0x4B The next bytes is data to be pushed onto the stack
   const PUSHBYTES75 = 0x4B;
   const PUSHDATA1 = 0x4C; // The next byte contains the number of bytes to be pushed onto the stack.
@@ -14,7 +14,7 @@ class Opcode
   const PUSHDATA4 = 0x4E; // The next four bytes contain the number of bytes to be pushed onto the stack.
   const PUSHM1 = 0x4F; // The number -1 is pushed onto the stack.
   const PUSH1 = 0x51; // The number 1 is pushed onto the stack.
-  const PUSHT = PUSH1;
+  const PUSHT = 0x01;
   const PUSH2 = 0x52; // The number 2 is pushed onto the stack.
   const PUSH3 = 0x53; // The number 3 is pushed onto the stack.
   const PUSH4 = 0x54; // The number 4 is pushed onto the stack.

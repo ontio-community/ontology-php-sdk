@@ -11,6 +11,7 @@ use ontio\crypto\PrivateKey;
 use ontio\crypto\SignatureScheme;
 use ontio\core\scripts\ScriptBuilder;
 use ontio\core\scripts\Opcode;
+use ontio\core\payload\DeployCode;
 
 class TransactionBuilder
 {
@@ -68,6 +69,41 @@ class TransactionBuilder
     if ($payer) {
       $tx->payer = $payer;
     }
+    return $tx;
+  }
+
+  public function makeDeployCodeTransaction(
+    string $code,
+    string $name,
+    string $codeVersion,
+    string $author,
+    string $email,
+    string $desc,
+    bool $needStorage,
+    string $gasPrice,
+    string $gasLimit,
+    ? Address $payer
+  ) : Transaction {
+    $dc = new DeployCode();
+    $dc->author = $author;
+    $dc->code = $code;
+    $dc->name = $name;
+    $dc->version = $codeVersion;
+    $dc->email = $email;
+    $dc->needStorage = $needStorage;
+    $dc->description = $desc;
+
+    $tx = new Transaction();
+    $tx->version = 0x00;
+    $tx->payload = $dc;
+    $tx->type = TxType::Deploy;
+
+    $tx->gasLimit = new Fixed64($gasLimit);
+    $tx->gasPrice = new Fixed64($gasPrice);
+    if ($payer) {
+      $tx->payer = $payer;
+    }
+
     return $tx;
   }
 }

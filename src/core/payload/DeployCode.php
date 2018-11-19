@@ -6,7 +6,7 @@ use ontio\core\scripts\ScriptBuilder;
 use ontio\common\ByteArray;
 use ontio\core\scripts\ScriptReader;
 
-class DeployCode implements Payload
+class DeployCode extends Payload
 {
   /** @var string */
   public $code;

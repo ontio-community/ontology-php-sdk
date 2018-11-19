@@ -11,7 +11,7 @@ class Util
 
   public static function hash160(string $stuff) : string
   {
-    return hash('ripemd160', hex2bin(hash('sha256', $stuff)));
+    return hash('ripemd160', hash('sha256', $stuff, true));
   }
 
   /**

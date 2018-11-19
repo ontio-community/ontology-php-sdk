@@ -74,9 +74,24 @@ class Address
     return self::base58ToHex($this->value);
   }
 
+  public function toHex() : string
+  {
+    $val = $this->value;
+    if (strlen($this->value) !== 40) {
+      $val = self::base58ToHex($this->value);
+    }
+    return ByteArray::fromHex($val)->reverse()->toHex();
+  }
+
+  /**
+   * Creates new address from VM code
+   *
+   * @param string $code hex encoded code string
+   * @return self
+   */
   public static function fromVmCode(string $code) : self
   {
-    $hash = Util::hash160($code);
+    $hash = Util::hash160(hex2bin($code));
     return new self($hash);
   }
 
