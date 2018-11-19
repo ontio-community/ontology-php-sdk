@@ -69,6 +69,15 @@ class Identity implements JsonSerializable
     return $id;
   }
 
+  /**
+   * Creates new Identify from the given private key
+   *
+   * @param PrivateKey $prikey
+   * @param string $pwd
+   * @param string $label
+   * @param ScryptParams|null $params
+   * @return self
+   */
   public static function create(PrivateKey $prikey, string $pwd, string $label, ? ScryptParams $params = null) : self
   {
     $id = new self();
