@@ -8,6 +8,7 @@ use function Ratchet\Client\connect;
 use function Clue\React\Block\await;
 use React\Promise\Deferred;
 use Ratchet\RFC6455\Messaging\Message;
+use React\Promise\PromiseInterface;
 
 class WebsocketRpc
 {
@@ -52,6 +53,31 @@ class WebsocketRpc
     return await($deferred->promise(), $this->loop);
   }
 
+  public function send(array $data, callable $filter, int $timeout = 60)
+  {
+    $deferred = new Deferred();
+
+    $conn = $this->newConn();
+    $id = uniqid();
+
+    $txHash;
+    $cb = function ($msg) use ($deferred, $conn, $id, &$txHash, $filter) {
+      /** @var Message $msg */
+      $msg = WebsocketRpcResult::fromJson(json_decode($msg->getPayload()));
+      if ($msg->Id === $id) {
+        $txHash = $msg->Result;
+      } else {
+        $filter($deferred, $conn, $id, $txHash, $msg);
+      }
+    };
+    $conn->on('message', $cb);
+
+    $data['Id'] = $id;
+    $conn->send(json_encode($data));
+
+    return await($deferred->promise(), $this->loop, $timeout);
+  }
+
   public function sendRawTransaction(string $data, bool $preExec = false, $waitNotify = false, int $timeout = 60) : WebsocketRpcResult
   {
     $data = [
@@ -68,27 +94,16 @@ class WebsocketRpc
       return $this->sendRequest($data);
     }
 
-    $deferred = new Deferred();
-
-    $conn = $this->newConn();
-    $id = uniqid();
-
-    $txHash;
-    $cb = function ($msg) use ($deferred, $conn, $id, &$txHash) {
-      /** @var Message $msg */
-      $msg = WebsocketRpcResult::fromJson(json_decode($msg->getPayload()));
+    $filter = function ($deferred, $conn, $id, $txHash, $msg) {
       if ($msg->Id === $id) {
         $txHash = $msg->Result;
       } else if ($txHash !== null && $msg->Action === 'Notify' && $msg->Result->TxHash === $txHash) {
         $deferred->resolve($msg);
+        $conn->close();
       }
     };
-    $conn->on('message', $cb);
 
-    $data['Id'] = $id;
-    $conn->send(json_encode($data));
-
-    return await($deferred->promise(), $this->loop, $timeout);
+    return $this->send($data, $filter, $timeout);
   }
 
   public function getNodeCount()
