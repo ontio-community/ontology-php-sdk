@@ -1,0 +1,38 @@
+{
+  "name": "ontology/ontology-php-sdk",
+  "description": "PHP library for the Ontology blockchain.",
+  "type": "library",
+  "license": "LGPL-3.0",
+  "authors": [
+    {
+      "name": "hsiaosiyuan",
+      "email": "hsiaosiyuan0@outlook.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "ontio\\": "src/"
+    }
+  },
+  "require": {
+    "php": "~7.0.0 || ~7.1.0 || ~7.2.0",
+    "simplito/elliptic-php": "dev-master",
+    "bitwasp/bitcoin": "dev-master",
+    "stephenhill/base58": "~1.0",
+    "ext-scrypt": "1.4.2",
+    "ext-openssl": "*",
+    "ext-sodium": "*",
+    "adbario/php-dot-notation": "2.x-dev",
+    "guzzlehttp/guzzle": "^6.3@dev",
+    "clue/block-react": "^1.3",
+    "ratchet/pawl": "dev-master",
+    "react/event-loop": "^1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7"
+  },
+  "scripts": {
+    "test": "phpunit --debug --colors=always --testdox tests/"
+  }
+}
