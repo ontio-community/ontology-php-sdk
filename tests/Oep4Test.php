@@ -15,7 +15,7 @@ use ontio\common\ByteArray;
 
 const codeHash = 'cf8a3226f873bb73ed66039de4ff6a32b00693ac';
 
-final class OntidContractTxBuilderTest extends TestCase
+final class Oep4Test extends TestCase
 {
   /** @var Wallet */
   public static $wallet;
