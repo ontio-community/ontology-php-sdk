@@ -72,7 +72,7 @@ class Transaction implements Signable
   public function serializeSignedData() : string
   {
     $builder = new ScriptBuilder();
-    $ret = $builder->pushVarInt(count($this->sigs))->toHex();
+    $ret = $builder->pushInt(count($this->sigs))->toHex();
     foreach ($this->sigs as $sig) {
       $ret = $ret . $sig->serialize();
     }

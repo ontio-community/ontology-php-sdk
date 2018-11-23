@@ -3,12 +3,10 @@
   "description": "PHP library for the Ontology blockchain.",
   "type": "library",
   "license": "LGPL-3.0",
-  "authors": [
-    {
-      "name": "hsiaosiyuan",
-      "email": "hsiaosiyuan0@outlook.com"
-    }
-  ],
+  "authors": [{
+    "name": "hsiaosiyuan",
+    "email": "hsiaosiyuan0@outlook.com"
+  }],
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
