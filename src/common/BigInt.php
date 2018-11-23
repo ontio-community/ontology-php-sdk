@@ -35,4 +35,10 @@ class BigInt
   {
     return bin2hex(gmp_export($this->value, 2, GMP_LSW_FIRST));
   }
+
+  public function equals($val) : bool
+  {
+    $val = gmp_init($val);
+    return gmp_cmp($this->value, $val) === 0;
+  }
 }

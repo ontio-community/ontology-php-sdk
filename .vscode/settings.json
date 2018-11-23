@@ -68,6 +68,7 @@
     "keypair",
     "libsodium",
     "nativevm",
+    "neovm",
     "occuring",
     "ontio",
     "openssl",
@@ -83,5 +84,6 @@
     "stephenhill",
     "testdox",
     "testmode"
-  ]
+  ],
+  "python.linting.pylintEnabled": false
 }

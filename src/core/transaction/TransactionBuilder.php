@@ -25,6 +25,12 @@ class TransactionBuilder
     $tx->sigs = [$sig];
   }
 
+  public function addSig(Transaction $tx, PrivateKey $prikey, ? SignatureScheme $scheme = null)
+  {
+    $sig = TxSignature::create($tx, $prikey, $scheme);
+    $tx->sigs[] = $sig;
+  }
+
   /**
    * Creates transaction to invoke native contract
    *
@@ -123,10 +129,10 @@ class TransactionBuilder
    */
   public function makeInvokeTransaction(
     string $fnName,
-    array $params,
+    $params,
     Address $contractAddr,
-    ? string $gasPrice = null,
-    ? string $gasLimit = null,
+    string $gasPrice = '0',
+    string $gasLimit = '20000',
     ? Address $payer = null
   ) : Transaction {
 
