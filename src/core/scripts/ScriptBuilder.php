@@ -86,40 +86,6 @@ class ScriptBuilder extends ByteArray
     return $this;
   }
 
-  public function pushMap(array $val) : self
-  {
-    $this->pushInt(ParameterTypeVal::Map);
-    $this->pushInt(count($val));
-
-    foreach ($val as $k => $v) {
-      $this->pushInt(ParameterTypeVal::ByteArray);
-      $this->pushHexString(ByteArray::fromBinary($k)->toHex());
-
-      /** @var Parameter $v */
-      $type = $v->getType();
-      if ($type === ParameterType::ByteArray) {
-        $this->pushInt(ParameterTypeVal::ByteArray);
-        $this->pushHexString($v->getValue());
-      } else if ($type === ParameterType::String) {
-        $this->pushInt(ParameterTypeVal::ByteArray);
-        $this->pushHexString(ByteArray::fromBinary($v->getValue())->toHex());
-      } else if ($type === ParameterType::Integer) {
-        $this->pushInt(ParameterTypeVal::Integer);
-        $b = new self();
-        $b->pushVarInt($v->getValue());
-        $this->pushHexString($b->toHex());
-      } else if ($type === ParameterType::Long) {
-        $this->pushInt(ParameterTypeVal::Long);
-        $b = new self();
-        $b->pushVarInt($v->getValue());
-        $this->pushHexString($b->toHex());
-      } else {
-        throw new \Exception(ErrorCode::INVALID_PARAMS);
-      }
-    }
-    return $this;
-  }
-
   public function pushStruct(Struct $s) : self
   {
     $this->pushInt(ParameterTypeVal::Struct);

@@ -108,6 +108,73 @@ class NativeVmParamsBuilder extends ScriptBuilder
     return true;
   }
 
+  public function pushMap(array $map) : self
+  {
+    $this->pushOpcode(Opcode::NEWMAP);
+    $this->pushOpcode(Opcode::TOALTSTACK);
+
+    foreach ($map as $key => $val) {
+      $this->pushOpcode(Opcode::DUPFROMALTSTACK);
+      $this->pushHexString(ByteArray::fromBinary($key)->toHex());
+      $this->pushParam($val);
+      $this->pushOpcode(Opcode::SETITEM);
+    }
+    $this->pushOpcode(Opcode::FROMALTSTACK);
+    return $this;
+  }
+
+  public function pushParam(Parameter $p) : self
+  {
+    $t = $p->getType();
+    $v = $p->getValue();
+    if ($t === ParameterType::ByteArray) {
+      if (!($v instanceof ByteArray)) {
+        throw new \Exception("value muse be ByteArray");
+      }
+      /** @var $v ByteArray */
+      $this->pushHexString($v->toHex());
+    } else if ($t === ParameterType::String) {
+      if (!is_string($v)) {
+        throw new \Exception("value muse be string");
+      }
+      /** @var $v string */
+      $this->pushHexString(ByteArray::fromBinary($v)->toHex());
+    } else if ($t === ParameterType::Boolean) {
+      if (!is_bool($v)) {
+        throw new \Exception("value muse be bool");
+      }
+      /** @var $v bool */
+      $this->pushBool($v);
+      $this->pushOpcode(Opcode::PUSH0);
+      $this->pushOpcode(Opcode::BOOLOR);
+    } else if ($t === ParameterType::Map) {
+      if (!Util::isAssocArray($v)) {
+        throw new \Exception("value muse be assoc array");
+      }
+      $this->pushMap($v);
+    } else if ($t === ParameterType::array) {
+      if (!is_array($v)) {
+        throw new \Exception("value muse be array");
+      }
+      foreach ($v as $k => $vv) {
+        $this->pushParam($vv);
+      }
+      $this->pushNum(count($v));
+      $this->pushOpcode(Opcode::PACK);
+    } else if ($t === ParameterType::Integer) {
+      $this->pushNum($v);
+      $this->pushOpcode(Opcode::PUSH0);
+      $this->pushOpcode(Opcode::ADD);
+    } else if ($t === ParameterType::Long) {
+      $this->pushBigNum($v);
+      $this->pushOpcode(Opcode::PUSH0);
+      $this->pushOpcode(Opcode::ADD);
+    } else {
+      throw new \Exception("unsupported param type: " . $t);
+    }
+    return $this;
+  }
+
   public function pushCodeParams(array $list) : self
   {
     for ($i = count($list) - 1; $i >= 0; $i--) {
@@ -121,9 +188,7 @@ class NativeVmParamsBuilder extends ScriptBuilder
       } else if ($v instanceof GMP) {
         $this->pushBigNum($v);
       } else if (Util::isAssocArray($v)) {
-        $b = new self();
-        $b->pushMap($v);
-        $this->pushHexString($b->toHex());
+        $this->pushMap($v);
       } else if ($v instanceof Struct) {
         $b = new self();
         $b->pushStruct($v);

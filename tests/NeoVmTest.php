@@ -13,6 +13,7 @@ use ontio\smartcontract\abi\ParameterType;
 use ontio\smartcontract\abi\Struct;
 use ontio\common\ByteArray;
 use ontio\smartcontract\data\IdContract;
+use ontio\common\BigInt;
 
 final class NeoVmTest extends TestCase
 {
@@ -52,8 +53,8 @@ final class NeoVmTest extends TestCase
 
     self::$rpc = new JsonRpc('http://127.0.0.1:20336');
 
-    self::$code = '57c56b6c766b00527ac46c766b51527ac4616c766b00c307546573744d6170876c766b52527ac46c766b52c3641200616165c7006c766b53527ac462b4006c766b00c30e446573657269616c697a654d6170876c766b54527ac46c766b54c3641900616c766b51c300c3616511026c766b53527ac4627a006c766b00c30a54657374537472756374876c766b55527ac46c766b55c3641200616165e9026c766b53527ac4624b006c766b00c311446573657269616c697a65537472756374876c766b56527ac46c766b56c3641900616c766b51c300c36165cc036c766b53527ac4620e00006c766b53527ac46203006c766b53c3616c756658c56b6161681953797374656d2e53746f726167652e476574436f6e746578746c766b00527ac4c76c766b51527ac401646c766b52527ac46c766b51c3036b65796c766b52c3c4616c766b51c361681853797374656d2e52756e74696d652e53657269616c697a656c766b53527ac46c766b00c30274786c766b53c3615272681253797374656d2e53746f726167652e507574616c766b00c3027478617c681253797374656d2e53746f726167652e4765746c766b54527ac46c766b54c361681a53797374656d2e52756e74696d652e446573657269616c697a656c766b55527ac46c766b55c36416006c766b55c3036b6579c36c766b52c39c620400006c766b56527ac46c766b56c3643c00616c766b00c306726573756c740474727565615272681253797374656d2e53746f726167652e507574616c766b53c36c766b57527ac46238006c766b00c306726573756c740566616c7365615272681253797374656d2e53746f726167652e50757461006c766b57527ac46203006c766b57c3616c756656c56b6c766b00527ac4616c766b00c361681a53797374656d2e52756e74696d652e446573657269616c697a656c766b51527ac461681953797374656d2e53746f726167652e476574436f6e746578746c766b52527ac401646c766b53527ac46c766b51c36416006c766b51c3036b6579c36c766b53c39c620400006c766b54527ac46c766b54c3643800616c766b52c306726573756c740474727565615272681253797374656d2e53746f726167652e50757461516c766b55527ac46241006c766b52c306726573756c740566616c7365615272681253797374656d2e53746f726167652e507574616c766b51c3036b6579c36c766b55527ac46203006c766b55c3616c756656c56b6161681953797374656d2e53746f726167652e476574436f6e746578746c766b00527ac46152c56c766b51527ac46c766b51c307636c61696d6964517cc46c766b51c30164007cc46c766b51c361681853797374656d2e52756e74696d652e53657269616c697a656c766b52527ac46c766b00c30274786c766b52c3615272681253797374656d2e53746f726167652e507574616c766b00c3027478617c681253797374656d2e53746f726167652e4765746c766b53527ac46c766b52c300a06c766b54527ac46c766b54c3641300616c766b52c36c766b55527ac46238006c766b00c306726573756c740566616c7365615272681253797374656d2e53746f726167652e50757461006c766b55527ac46203006c766b55c3616c756656c56b6c766b00527ac4616c766b00c361681a53797374656d2e52756e74696d652e446573657269616c697a656c766b51527ac461681953797374656d2e53746f726167652e476574436f6e746578746c766b52527ac401646c766b53527ac46c766b51c36413006c766b51c300c36c766b53c39c620400006c766b54527ac46c766b54c3643800616c766b52c306726573756c740474727565615272681253797374656d2e53746f726167652e50757461516c766b55527ac4623e006c766b52c306726573756c740566616c7365615272681253797374656d2e53746f726167652e507574616c766b51c300c36c766b55527ac46203006c766b55c3616c7566';
-    self::$abi = '{"hash":"0x3c341335540c51c03bdef0f460994f99ea4659e8","entrypoint":"Main","functions":[{"name":"Main","parameters":[{"name":"operation","type":"String"},{"name":"args","type":"Array"}],"returntype":"Any"},{"name":"TestMap","parameters":[],"returntype":"Any"},{"name":"DeserializeMap","parameters":[{"name":"param","type":"ByteArray"}],"returntype":"Any"},{"name":"TestStruct","parameters":[],"returntype":"Any"},{"name":"DeserializeStruct","parameters":[{"name":"param","type":"ByteArray"}],"returntype":"Any"}],"events":[]}';
+    self::$code = trim(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . "NeoVmTests.avm"));
+    self::$abi = trim(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . "NeoVmTests.abi.json"));
     self::$codeHash = Address::fromVmCode(self::$code)->toHex();
 
     $txBuilder = new TransactionBuilder();
@@ -74,101 +75,131 @@ final class NeoVmTest extends TestCase
     $res = $wsRpc->sendRawTransaction($tx->serialize(), false, true);
   }
 
-  public function test_TestMap()
+  public function test_struct()
   {
     $abi = AbiInfo::fromJson(self::$abi);
-    $fn = $abi->getFunction('TestMap');
-
-    $txBuilder = new TransactionBuilder();
-    $tx = $txBuilder->makeInvokeTransaction(
-      $fn->name,
-      $fn->parameters,
-      new Address(self::$codeHash),
-      '0',
-      '30000000',
-      self::$adminAddress
-    );
-    $txBuilder->signTransaction($tx, self::$adminPrivateKey);
-
-    $res = self::$rpc->sendRawTransaction($tx->serialize());
-    $this->assertEquals('SUCCESS', $res->desc);
-  }
-
-  public function test_DeserializeMap()
-  {
-    $abi = AbiInfo::fromJson(self::$abi);
-    $fn = $abi->getFunction('DeserializeMap');
-
-    $map = [
-      'key' => new Parameter('', ParameterType::Integer, 100)
-    ];
-
-    $param = new Parameter('param', ParameterType::ByteArray, $map);
-    $fn->setParamsValue($param);
-
-    $txBuilder = new TransactionBuilder();
-    $tx = $txBuilder->makeInvokeTransaction(
-      $fn->name,
-      $fn->parameters,
-      new Address(self::$codeHash),
-      '0',
-      '30000000',
-      self::$adminAddress
-    );
-
-    $txBuilder->signTransaction($tx, self::$adminPrivateKey);
-
-    $res = self::$rpc->sendRawTransaction($tx->serialize());
-    $this->assertEquals('SUCCESS', $res->desc);
-  }
-
-  public function test_TestStruct()
-  {
-    $abi = AbiInfo::fromJson(self::$abi);
-    $fn = $abi->getFunction('TestStruct');
-
-    $txBuilder = new TransactionBuilder();
-    $tx = $txBuilder->makeInvokeTransaction(
-      $fn->name,
-      $fn->parameters,
-      new Address(self::$codeHash),
-      '0',
-      '30000000',
-      self::$adminAddress
-    );
-    $txBuilder->signTransaction($tx, self::$adminPrivateKey);
-
-    $res = self::$rpc->sendRawTransaction($tx->serialize());
-    $this->assertEquals('SUCCESS', $res->desc);
-  }
-
-  public function test_DeserializeStruct()
-  {
-    $abi = AbiInfo::fromJson(self::$abi);
-    $fn = $abi->getFunction('DeserializeStruct');
+    $fn = $abi->getFunction('testStructList');
 
     $struct = new Struct();
-    $struct->add(
-      100,
-      ByteArray::fromBinary('claimid')->toHex()
-    );
-
-    $param = new Parameter($fn->parameters[0]->getName(), ParameterType::ByteArray, $struct);
-    $fn->setParamsValue($param);
+    $struct->add(100, ByteArray::fromBinary("claimid")->toHex());
 
     $txBuilder = new TransactionBuilder();
     $tx = $txBuilder->makeInvokeTransaction(
       $fn->name,
-      $fn->parameters,
+      [
+        new Parameter("structList", ParameterType::Struct, $struct)
+      ],
       new Address(self::$codeHash),
       '0',
       '30000000',
       self::$adminAddress
     );
-
     $txBuilder->signTransaction($tx, self::$adminPrivateKey);
 
-    $res = self::$rpc->sendRawTransaction($tx->serialize());
+    $res = self::$rpc->sendRawTransaction($tx->serialize(), true);
     $this->assertEquals('SUCCESS', $res->desc);
+
+    $s = Struct::fromHex($res->result->Result);
+    $int = BigInt::fromHex($s->list[0]->bytes->toHex());
+    $str = $s->list[1]->bytes->toBinary();
+
+    $this->assertTrue($int->equals(100));
+    $this->assertEquals('claimid', $str);
+  }
+
+  public function test_setMap()
+  {
+    $abi = AbiInfo::fromJson(self::$abi);
+    $fn = $abi->getFunction('testMap');
+
+    $map = new Parameter("msg", ParameterType::Map, [
+      "key" => new Parameter("", ParameterType::String, "value")
+    ]);
+
+    $txBuilder = new TransactionBuilder();
+    $tx = $txBuilder->makeInvokeTransaction(
+      $fn->name,
+      [$map],
+      new Address(self::$codeHash),
+      '0',
+      '30000000',
+      self::$adminAddress
+    );
+    $txBuilder->signTransaction($tx, self::$adminPrivateKey);
+
+    $res = self::$rpc->sendRawTransaction($tx->serialize(), false, true);
+    $this->assertEquals('SUCCESS', $res->desc);
+  }
+
+  public function test_getMap()
+  {
+    $abi = AbiInfo::fromJson(self::$abi);
+    $fn = $abi->getFunction('testGetMap');
+
+    $txBuilder = new TransactionBuilder();
+    $tx = $txBuilder->makeInvokeTransaction(
+      $fn->name,
+      [
+        new Parameter("key", ParameterType::String, "key")
+      ],
+      new Address(self::$codeHash),
+      '0',
+      '30000000',
+      self::$adminAddress
+    );
+    $txBuilder->signTransaction($tx, self::$adminPrivateKey);
+
+    $res = self::$rpc->sendRawTransaction($tx->serialize(), true);
+    $this->assertEquals('SUCCESS', $res->desc);
+    $this->assertEquals('value', ByteArray::fromHex($res->result->Result)->toBinary());
+  }
+
+  public function test_setMapInMap()
+  {
+    $abi = AbiInfo::fromJson(self::$abi);
+    $fn = $abi->getFunction('testMapInMap');
+
+    $map = new Parameter("msg", ParameterType::Map, [
+      "key" => new Parameter("", ParameterType::Map, [
+        "key" => new Parameter("", ParameterType::String, "value")
+      ])
+    ]);
+
+    $txBuilder = new TransactionBuilder();
+    $tx = $txBuilder->makeInvokeTransaction(
+      $fn->name,
+      [$map],
+      new Address(self::$codeHash),
+      '0',
+      '30000000',
+      self::$adminAddress
+    );
+    $txBuilder->signTransaction($tx, self::$adminPrivateKey);
+
+    $res = self::$rpc->sendRawTransaction($tx->serialize(), false, true);
+    $this->assertEquals('SUCCESS', $res->desc);
+  }
+
+  public function test_getMapInMap()
+  {
+    $abi = AbiInfo::fromJson(self::$abi);
+    $fn = $abi->getFunction('testGetMapInMap');
+
+    $txBuilder = new TransactionBuilder();
+    $tx = $txBuilder->makeInvokeTransaction(
+      $fn->name,
+      [
+        new Parameter("key", ParameterType::String, "key")
+      ],
+      new Address(self::$codeHash),
+      '0',
+      '30000000',
+      self::$adminAddress
+    );
+    $txBuilder->signTransaction($tx, self::$adminPrivateKey);
+
+    $res = self::$rpc->sendRawTransaction($tx->serialize(), true);
+    $this->assertEquals('SUCCESS', $res->desc);
+    $this->assertEquals('value', ByteArray::fromHex($res->result->Result)->toBinary());
   }
 }

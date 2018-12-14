@@ -17,8 +17,18 @@ class AbiInfo
   {
     $info = new self;
     $data = json_decode($json);
-    $info->hash = $data->hash;
+
+    if ($data->contractHash) {
+      $info->hash = $data->contractHash;
+    } else {
+      $info->hash = $data->hash;
+    }
     $info->entrypoint = $data->entrypoint;
+
+    if ($data->abi) {
+      $data = $data->abi;
+    }
+
     $info->functions = array_map(function ($f) {
       return AbiFunction::fromJsonObj($f);
     }, $data->functions);

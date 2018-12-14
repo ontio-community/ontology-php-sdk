@@ -5,6 +5,8 @@ namespace ontio\core\scripts;
 use ontio\common\ForwardBuffer;
 use ontio\common\ByteArray;
 use ontio\crypto\PublicKey;
+use ontio\smartcontract\abi\Struct;
+use ontio\smartcontract\abi\StructRawField;
 
 class ScriptReader extends ForwardBuffer
 {
@@ -76,5 +78,18 @@ class ScriptReader extends ForwardBuffer
   {
     $bytes = $this->readBytes();
     return PublicKey::fromHex(new ForwardBuffer($bytes));
+  }
+
+  public function readStruct() : Struct
+  {
+    $this->readOpcode();
+    $ret = new Struct();
+    $len = $this->readUInt8();
+    for($i = 0; $i<$len; $i++) {
+      $type = $this->readUInt8();
+      $bytes = $this->readVarBytes();
+      $ret->list[] = new StructRawField($type, $bytes);
+    }
+    return $ret;
   }
 }
