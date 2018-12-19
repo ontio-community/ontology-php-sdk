@@ -51,6 +51,7 @@
     "autoload",
     "bitwasp",
     "blockchain",
+    "claimid",
     "entrypoint",
     "getallowance",
     "getbalance",

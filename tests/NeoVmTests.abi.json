@@ -1,0 +1,145 @@
+{
+  "contractHash": "cc9968cd60e753fdb640e758f5a096a61f6274d7",
+  "abi": {
+    "functions": [{
+      "name": "Main",
+      "parameters": [{
+        "name": "operation",
+        "type": ""
+      }, {
+        "name": "args",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "name",
+      "parameters": [{
+        "name": "",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "hello",
+      "parameters": [{
+        "name": "msg",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "testTrue",
+      "parameters": [{
+        "name": "",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "testFalse",
+      "parameters": [{
+        "name": "",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "testHello",
+      "parameters": [{
+        "name": "msgBool",
+        "type": ""
+      }, {
+        "name": "msgInt",
+        "type": ""
+      }, {
+        "name": "msgByteArray",
+        "type": ""
+      }, {
+        "name": "msgStr",
+        "type": ""
+      }, {
+        "name": "msgAddress",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "testList",
+      "parameters": [{
+        "name": "msgList",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "testListAndStr",
+      "parameters": [{
+        "name": "msgList",
+        "type": ""
+      }, {
+        "name": "msgStr",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "testStructList",
+      "parameters": [{
+        "name": "structList",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "testStructListAndStr",
+      "parameters": [{
+        "name": "structList",
+        "type": ""
+      }, {
+        "name": "msgStr",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "testMap",
+      "parameters": [{
+        "name": "msg",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "testGetMap",
+      "parameters": [{
+        "name": "key",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "testMapInMap",
+      "parameters": [{
+        "name": "msg",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "testGetMapInMap",
+      "parameters": [{
+        "name": "key",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "transfer",
+      "parameters": [{
+        "name": "from_acct",
+        "type": ""
+      }, {
+        "name": "to_acct",
+        "type": ""
+      }, {
+        "name": "amount",
+        "type": ""
+      }],
+      "returntype": ""
+    }, {
+      "name": "transferMulti",
+      "parameters": [{
+        "name": "args",
+        "type": ""
+      }],
+      "returntype": ""
+    }]
+  }
+}

@@ -2,6 +2,10 @@
 
 namespace ontio\smartcontract\abi;
 
+use ontio\core\scripts\ScriptReader;
+use ontio\common\ByteArray;
+
+
 class Struct
 {
   public $list = [];
@@ -12,5 +16,10 @@ class Struct
     foreach ($args as $arg) {
       $this->list[] = $arg;
     }
+  }
+
+  public static function fromHex(string $hex) {
+    $r = new ScriptReader(ByteArray::fromHex($hex));
+    return $r->readStruct();
   }
 }
