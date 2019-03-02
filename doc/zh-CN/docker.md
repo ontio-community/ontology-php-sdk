@@ -13,7 +13,13 @@
 通过下面的命令拉取镜像文件:
 
 ```bash
-docker pull hsiaosiyuan0/ontiphpsdk
+docker pull hsiaosiyuan0/ontiphpsdk:0.1
+```
+
+通过下面的命令运行镜像:
+
+```bash
+docker run -it -p 20334-20336:20334-20336  hsiaosiyuan0/ontiphpsdk:0.1
 ```
 
 ## 镜像内容简介
