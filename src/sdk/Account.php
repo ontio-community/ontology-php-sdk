@@ -144,7 +144,7 @@ class Account implements JsonSerializable
     ScryptParams $params = null
   ) : self {
     $prikey = PrivateKey::fromWif($wif);
-    return self::create($params, $priKey, $label, $params);
+    return self::create($password, $prikey, $label, $params);
   }
 
   public static function importFromMnemonic(
