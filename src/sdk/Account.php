@@ -193,9 +193,9 @@ class Account implements JsonSerializable
       'algorithm' => $obj->algorithm,
       'parameters' => $obj->parameters,
       'key' => $obj->key,
-      'external' => $obj->external
+      // 'external' => $obj->external
     ]);
-    $acc->extra = $obj->extra;
+    // $acc->extra = $obj->extra;
     return $acc;
   }
 

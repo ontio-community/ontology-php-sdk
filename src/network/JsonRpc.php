@@ -50,6 +50,11 @@ class JsonRpc
     return $this->req('getbalance', $address->toBase58());
   }
 
+  public function getGasPrice() : JsonRpcResult
+  {
+    return $this->req('getgasprice');
+  }
+
   /**
    * Send ran transaction to blockchain.
    *
@@ -136,6 +141,11 @@ class JsonRpc
   public function getBlockHeightByTxHash($txHash) : JsonRpcResult
   {
     return $this->req('getblockheightbytxhash', $txHash);
+  }
+
+  public function getBlockTxsByHeight($height) : JsonRpcResult
+  {
+    return $this->req('getblocktxsbyheight', $height);
   }
 
   public function getStorage(string $codeHash, string $key) : JsonRpcResult

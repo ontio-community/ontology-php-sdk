@@ -67,7 +67,7 @@ class OntAssetTxBuilder
     /** @var Transfer $tx */
     $tx = $txBuilder->makeNativeContractTx('transfer', $params, $contract, $gasPrice, $gasLimit, $payer);
     $tx->tokenType = $tokenType;
-    $tx->from = $form;
+    $tx->from = $from;
     $tx->to = $to;
     $tx->amount = $amount;
     $tx->method = 'transfer';

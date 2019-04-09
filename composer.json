@@ -14,7 +14,7 @@
     }
   },
   "require": {
-    "php": "~7.0.0 || ~7.1.0 || ~7.2.0",
+    "php": "~7.0.0 || ~7.1.0 || ~7.2.0 || ~7.3.0",
     "simplito/elliptic-php": "dev-master",
     "bitwasp/bitcoin": "dev-master",
     "stephenhill/base58": "~1.0",
