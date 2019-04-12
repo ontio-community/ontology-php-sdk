@@ -27,13 +27,13 @@ class BigInt
 
   public static function fromHex(string $hex) : self
   {
-    $v = gmp_import(hex2bin($hex), 1, GMP_LSW_FIRST);
+    $v = gmp_import(hex2bin($hex), 8, GMP_LSW_FIRST);
     return new self($v);
   }
 
   public function toHex() : string
   {
-    return bin2hex(gmp_export($this->value, 2, GMP_LSW_FIRST));
+    return bin2hex(gmp_export($this->value, 8, GMP_LSW_FIRST));
   }
 
   public function equals($val) : bool

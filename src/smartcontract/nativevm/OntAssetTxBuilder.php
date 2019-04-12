@@ -35,7 +35,7 @@ class OntAssetTxBuilder
    */
   public function verifyAmount($amount)
   {
-    $amount = ($amount instanceof GMP) ? $amount : gmp_init((int)$amount);
+    $amount = ($amount instanceof GMP) ? $amount : gmp_init((string)$amount);
     if (!(gmp_cmp($amount, 0) > 0)) {
       throw new \InvalidArgumentException('Amount is invalid');
     }
