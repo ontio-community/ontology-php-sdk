@@ -53,12 +53,18 @@ class Parameter
     return false;
   }
 
-  public function fromJsonObj($obj) : self
+  public static function fromJsonObj($obj) : self
   {
     $p = new self('', 0, null);
+
     $p->name = $obj->name;
     $p->type = $obj->type;
-    $p->value = $obj->value;
+
+    // Maybe not exist?
+    if (property_exists($obj, 'value')) {
+      $p->value = $obj->value;
+    }
+
     return $p;
   }
 }
