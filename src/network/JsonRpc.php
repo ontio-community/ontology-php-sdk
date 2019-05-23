@@ -41,7 +41,7 @@ class JsonRpc
   public function req(string $method, ...$params)
   {
     $req = $this->makeRequest($method, ...$params);
-    $resp = $this->c->request('POST', $this->url, ['json' => $req])->getBody()->getContents();
+    $resp = $this->c->request('POST', $this->url, ['connect_timeout' => 10, 'timeout' => 30, 'json' => $req])->getBody()->getContents();
     return JsonRpcResult::fromJson(json_decode($resp));
   }
 
