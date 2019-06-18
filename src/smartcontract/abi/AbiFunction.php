@@ -52,7 +52,12 @@ class AbiFunction
   {
     $f = new self('', [], 'any');
     $f->name = $obj->name;
-    $f->returnType = $obj->returnType;
+
+    // Maybe not exist?
+    if (property_exists($obj, 'returnType')) {
+      $f->returnType = $obj->returnType;
+    }
+
     $f->parameters = array_map(function ($p) {
       return Parameter::fromJsonObj($p);
     }, $obj->parameters);

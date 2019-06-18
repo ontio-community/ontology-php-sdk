@@ -41,13 +41,18 @@ class JsonRpc
   public function req(string $method, ...$params)
   {
     $req = $this->makeRequest($method, ...$params);
-    $resp = $this->c->request('POST', $this->url, ['json' => $req])->getBody()->getContents();
+    $resp = $this->c->request('POST', $this->url, ['connect_timeout' => 10, 'timeout' => 30, 'json' => $req])->getBody()->getContents();
     return JsonRpcResult::fromJson(json_decode($resp));
   }
 
   public function getBalance(Address $address) : JsonRpcResult
   {
     return $this->req('getbalance', $address->toBase58());
+  }
+
+  public function getGasPrice() : JsonRpcResult
+  {
+    return $this->req('getgasprice');
   }
 
   /**
@@ -136,6 +141,11 @@ class JsonRpc
   public function getBlockHeightByTxHash($txHash) : JsonRpcResult
   {
     return $this->req('getblockheightbytxhash', $txHash);
+  }
+
+  public function getBlockTxsByHeight($height) : JsonRpcResult
+  {
+    return $this->req('getblocktxsbyheight', $height);
   }
 
   public function getStorage(string $codeHash, string $key) : JsonRpcResult

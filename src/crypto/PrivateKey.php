@@ -44,7 +44,7 @@ class PrivateKey extends Key
       ByteArray::fromBase64($obj->key),
       KeyType::fromLabel($obj->algorithm),
       KeyParameters::fromJsonObj($obj->parameters),
-      ScryptParams::fromJsonObj($obj->scrypt)
+      // ScryptParams::fromJsonObj($obj->scrypt)
     );
   }
 

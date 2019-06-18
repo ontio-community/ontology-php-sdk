@@ -35,7 +35,7 @@ class OntAssetTxBuilder
    */
   public function verifyAmount($amount)
   {
-    $amount = ($amount instanceof GMP) ? $amount : gmp_init((int)$amount);
+    $amount = ($amount instanceof GMP) ? $amount : gmp_init((string)$amount);
     if (!(gmp_cmp($amount, 0) > 0)) {
       throw new \InvalidArgumentException('Amount is invalid');
     }
@@ -67,7 +67,7 @@ class OntAssetTxBuilder
     /** @var Transfer $tx */
     $tx = $txBuilder->makeNativeContractTx('transfer', $params, $contract, $gasPrice, $gasLimit, $payer);
     $tx->tokenType = $tokenType;
-    $tx->from = $form;
+    $tx->from = $from;
     $tx->to = $to;
     $tx->amount = $amount;
     $tx->method = 'transfer';
